@@ -11,6 +11,8 @@ def main():
 
     # Inject JavaScript code into the webpage
     script = """
+     window._xpath_list = []; 
+
 function getXPathWithUniqueAttributes(element) {
     const attributes = ['id', 'name', 'class']; // Add more attributes as needed
     for (const attr of attributes) {
@@ -49,6 +51,7 @@ function getXPathWithUniqueAttributes(element) {
     document.addEventListener('click', function(event) {
         var xpath = getXPathWithUniqueAttributes(event.target);
         console.log('Clicked element XPath:', xpath);
+          window._xpath_list.push(xpath);
     });
     """
 
@@ -57,6 +60,9 @@ function getXPathWithUniqueAttributes(element) {
     # Continuous monitoring for click events
     while True:
         time.sleep(1)  # Check every second for click events
+        xpath_list = driver.execute_script("return window._xpath_list;")
+        print("Current XPaths:", xpath_list)  # Print the updated list of XPath expressions
+
 
 if __name__ == '__main__':
     main()
